@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  webmvc:
+    build:
+     context: .
+     dockerfile: Dockerfile
+
+    environment:
+      - LanguageUrl=http://language-api:8010
+    ports:
+      - "5000:8080"
+    depends_on:
+      - language-api
+      - redis
+
+
+  language-api:
+    build:
+     context: ./lib/checker/languagetool
+     dockerfile: Dockerfile
+    expose:
+      - "8010"
+    ports:
+      - "8010:8010"
+
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
